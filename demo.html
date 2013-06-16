@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Waterfall test page</title>
+</head>
+
+<body>
+<h1>Waterfall</h1>
+
+<div id="waterfall"></div>
+<script src="waterfall.js"></script>
+<script>
+(function(window, document, undefined) {
+	function gotStream(stream) {
+		window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+
+		context = new AudioContext();
+		streamSource = context.createMediaStreamSource(stream);
+		streamSource.connect(context.destination);
+		console.log(context, streamSource);
+
+		var waterfall = window.Waterfall({
+			stream: streamSource,
+			context: context
+		});
+	}
+
+	navigator.webkitGetUserMedia({ audio: true }, gotStream);
+}(window, document));
+</script>
+</body>
+</html>
