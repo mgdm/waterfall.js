@@ -15,11 +15,15 @@
 <script>
 (function(window, document, undefined) {
 	function gotStream(stream) {
-		window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+		if (typeof AudioContext !== "undefined") {
+			context = new AudioContext();
+		} else if (typeof webkitAudioContext !== "undefined") {
+			context = new webkitAudioContext();
+		} else if (typeof mozAudioContext !== "undefined") {
+			context = new mozAudioContext();
+		}
 
-		context = new AudioContext();
 		streamSource = context.createMediaStreamSource(stream);
-		//streamSource.connect(context.destination);
 
 		var waterfall = window.Waterfall({
 			stream: streamSource,
@@ -27,7 +31,12 @@
 		});
 	}
 
-	navigator.webkitGetUserMedia({ audio: true }, gotStream);
+	function handleError(err) {
+		console.log("An error occurred: " + err);
+	}
+
+	navigator.getMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+	navigator.getMedia({ audio: true }, gotStream, handleError);
 }(window, document));
 </script>
 </body>
