@@ -23,8 +23,6 @@
 
 		var analyser = audioContext.createAnalyser();
 		audioStream.connect(analyser);
-		analyser.connect(audioContext.destination);
-		console.log(analyser);
 
 		var moveBy = 1;
 		function draw() {

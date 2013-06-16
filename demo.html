@@ -17,8 +17,7 @@
 
 		context = new AudioContext();
 		streamSource = context.createMediaStreamSource(stream);
-		streamSource.connect(context.destination);
-		console.log(context, streamSource);
+		//streamSource.connect(context.destination);
 
 		var waterfall = window.Waterfall({
 			stream: streamSource,
